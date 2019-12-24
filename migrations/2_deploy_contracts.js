@@ -1,11 +1,9 @@
-const DappToken = artifacts.require("DappToken");
-const DappTokenSale = artifacts.require("DappTokenSale");
+var DappToken = artifacts.require("DappToken.sol");
+var DappTokenSale = artifacts.require("DappTokenSale.sol");
 
-module.exports = function (deployer) {
-  deployer.deploy(DappToken, 30000000).then(function () {
-    //Token price is 0.004 ETH
-    var _tokenPrice = 4000000000000000;
-    return deployer.deploy(DappTokenSale,  DappToken.address,_tokenPrice);
+module.exports = function(deployer) {
+  deployer.deploy(DappToken, 1000000).then(function() {
+  	var tokenPrice = 1000000000000000; // in wei 0.001 Ether
+  	return deployer.deploy(DappTokenSale, DappToken.address, tokenPrice);
   });
 };
-

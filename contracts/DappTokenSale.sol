@@ -1,9 +1,10 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.4.21 <0.7.0;
+
 import "./DappToken.sol";
 
 contract DappTokenSale {
 
-    address payable admin;
+	address payable admin;
     DappToken public tokenContract;
     uint256 public tokenPrice;
     uint256 public tokensSold;
@@ -16,8 +17,7 @@ contract DappTokenSale {
         tokenPrice = _tokenPrice;
     }
 
-    // multiply
-    function multiply(uint x, uint y) internal pure returns (uint z){
+    function multiply(uint x, uint y) internal pure returns (uint z) {
         require(y == 0 || (z = x * y) / y == x);
     }
 
@@ -25,18 +25,16 @@ contract DappTokenSale {
         require(msg.value == multiply(_numberOfTokens, tokenPrice));
         require(tokenContract.balanceOf(address(this)) >= _numberOfTokens);
         require(tokenContract.transfer(msg.sender, _numberOfTokens));
+
         tokensSold += _numberOfTokens;
 
         emit Sell(msg.sender, _numberOfTokens);
     }
 
-    // Ending Token DappTokenSale
-    function endSale() public{
-        // Require admin
+    function endSale() public {
         require(msg.sender == admin);
         require(tokenContract.transfer(admin, tokenContract.balanceOf(address(this))));
-        // Tranfer remaining dapp tokens to admin
-        // Destro contract
-        selfdestruct(address(admin));
+
+        selfdestruct(admin);
     }
 }
